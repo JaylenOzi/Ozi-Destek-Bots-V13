@@ -14,6 +14,7 @@ Not: Slash Komutlar yüklenmedi die anneme sövmeyin global olduğu için dm de 
 ![image](https://user-images.githubusercontent.com/92666466/162340833-31c849ad-487a-40d7-b825-0b26409ca06d.png)
 ![image](https://user-images.githubusercontent.com/92666466/162340838-3cd06ad6-7f87-405c-b24c-89850cb9841d.png)
 ![image](https://user-images.githubusercontent.com/92666466/162340845-18aaa54e-24af-4d71-961a-a000f979e389.png)
+![image](https://user-images.githubusercontent.com/92666466/162455874-a0438902-7a40-4ca1-8c16-2e625122794a.png)
 ![image](https://user-images.githubusercontent.com/92666466/159189220-3de70393-4b85-4bdb-8a54-01f00133e9cd.png)
 ![image](https://user-images.githubusercontent.com/92666466/159189225-40ab7b50-9b6e-466b-8e26-c2ede5de6dc5.png)
 ![image](https://user-images.githubusercontent.com/92666466/159189230-6e58ce5e-ee69-45e1-a594-a3df9c4510c1.png)
