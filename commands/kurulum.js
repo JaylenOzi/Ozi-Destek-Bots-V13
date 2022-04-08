@@ -39,6 +39,24 @@ module.exports = {
     collector.on("collect", async (interaction) => {
 
         if(interaction.customId === "kanal") {
+
+            const parent2 = await interaction.guild.channels.create('Canlı Destek', { 
+                type: 'GUILD_CATEGORY' 
+              });
+
+            await interaction.guild.channels.create('Canlı Destek', { 
+                type: 'GUILD_TEXT',
+                parent: parent2.id,
+                permissionOverwrites: [{
+                    id: interaction.guild.id,
+                    deny: ['VIEW_CHANNEL'],
+                },
+                {
+                    id: ayar.CanlıDestekEkibiRoleID,
+                    allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+               }]
+            });
+
             const parent = await interaction.guild.channels.create('📋 Yetkili basvuru', { 
                 type: 'GUILD_CATEGORY' 
               });
@@ -66,7 +84,11 @@ module.exports = {
                 permissionOverwrites: [{
                     id: interaction.guild.id,
                     deny: ['VIEW_CHANNEL'],
-                }]
+                },
+               {
+                    id: ayar.YetkiliAlımRoleID,
+                    allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+               }]
             });
             await interaction.guild.channels.create('istek-sikayet-log', { 
                 type: 'GUILD_TEXT',
