@@ -3,6 +3,7 @@ const { Modal, TextInputComponent, showModal } = require('discord-modals')
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const ayar = require("../jaylen.json");
 const { green , red } = require("../jaylen.json");
+const client = global.bot; 
 
     module.exports = {
       data: new SlashCommandBuilder()
@@ -41,11 +42,25 @@ const { green , red } = require("../jaylen.json");
         .setLabel("Hayır")
         .setStyle("DANGER")
   
+        const onay = new MessageButton()
+        .setCustomId("onayla")
+        .setLabel("Onayla")
+        .setStyle("SUCCESS")
+  
+        const red = new MessageButton()
+        .setCustomId("reddet")
+        .setLabel("Reddet")
+        .setStyle("DANGER")
+
+
         const row = new MessageActionRow()
         .addComponents([istek, sikayet, canlıdestek, basvuru])
 
         const row2 = new MessageActionRow()
         .addComponents([evet, hayır])
+
+        const row3 = new MessageActionRow()
+        .addComponents([onay, red])
 
        interaction.reply({ content: `Lütfen **20 saniye** içerisinde hangi hizmeti kullanmak istediğinizi aşağıdaki butonlara tıklayarak belirtin.`, components: [row]})
 
@@ -116,6 +131,82 @@ const { green , red } = require("../jaylen.json");
         
         if(interaction.customId === "evt") {
           await interaction.update({ content: `Sizi canlı destek ekibimize bağlıyorum, lütfen beklemede kalın...`, components: []});
+  
+var LogChannel = client.guilds.cache.get(ayar.GuildID).channels.cache.find((channel) => channel.id === ayar.CanlıDestekLogChannelID);
+  let ozi = new MessageEmbed()
+  .setDescription(`
+${interaction.user} - \`${interaction.user.id}\` kullanıcısı Canlı Desteğe bağlanmak istiyor kabul ediyormusunuz?
+  `)
+  .setAuthor({ name: "Canlı Destek", iconURL: client.guilds.cache.get(ayar.GuildID).iconURL({ dynamic: true, size: 2048 }) })
+  .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true, size: 2048 }))
+  .setTimestamp()
+
+ let msg = await LogChannel.send({ content: `<@&${ayar.CanlıDestekEkibiRoleID}>`, embeds: [ozi], components: [row3] });
+
+    client.on("interactionCreate", async (interaction2) => {
+
+    if (interaction2.customId == "onayla") {
+  let ozi2 = new MessageEmbed()
+  .setDescription(`
+${interaction.user} - \`${interaction.user.id}\` kullanıcısının Canlı Destek başvurusu ${interaction2.user} tarafından başarıyla onaylandı.
+  `)
+  .setAuthor({ name: "Canlı Destek", iconURL: client.guilds.cache.get(ayar.GuildID).iconURL({ dynamic: true, size: 2048 }) })
+  .setThumbnail(interaction2.user.displayAvatarURL({ dynamic: true, size: 2048 }))
+  .setTimestamp()
+
+if(msg) msg.delete();
+
+interaction2.reply({
+  embeds : [ozi2],
+  components : []
+})
+
+      client.guilds.cache.get(ayar.GuildID).channels.create(`${interaction.user.username}-destek`, {
+        parent: ayar.CanlıDestekKategoryID,
+        topic: interaction.user.id,
+        permissionOverwrites: [{
+            id: interaction.user.id,
+            allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+          },
+
+          {
+            id: ayar.CanlıDestekEkibiRoleID,
+            allow: ['SEND_MESSAGES', 'VIEW_CHANNEL'],
+          },
+          {
+            id: client.guilds.cache.get(ayar.GuildID).roles.everyone,
+            deny: ['VIEW_CHANNEL'],
+          },
+        ],
+        type: 'text',
+      }).then(async c => {
+        interaction.user.send({
+          content: `Canlı Destek bağlantınız başarıyla ${interaction2.user} tarafından onaylandı.\n\nBuradan destek için yetkililerimiz ile konuşabilirsiniz. \` > \` <#${c.id}>`,
+          ephemeral: true
+        });
+ });
+}
+
+    if (interaction2.customId == "reddet") {
+  let ozi3 = new MessageEmbed()
+  .setDescription(`
+${interaction.user} - \`${interaction.user.id}\` kullanıcısının Canlı Destek başvurusu ${interaction2.user} tarafından reddedildi.
+  `)
+  .setAuthor({ name: "Canlı Destek", iconURL: interaction2.guild.iconURL({ dynamic: true, size: 2048 }) })
+  .setThumbnail(interaction2.user.displayAvatarURL({ dynamic: true, size: 2048 }))
+  .setTimestamp()
+
+if(msg) msg.delete();
+
+interaction2.reply({
+  embeds : [ozi3],
+  components : []
+})
+
+    await interaction.user.send({ content: `Canlı desteğe bağlanılırken bir hata oluştu veya bağlantı onaylanmadı!`, components: []}); 
+}
+    })
+
           collector.stop()
         } 
     
