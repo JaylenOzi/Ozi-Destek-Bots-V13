@@ -238,7 +238,7 @@ await LogChannel.send({ embeds: [ozi31], components: [] });
 
 const guild = client.guilds.cache.get(interaction3.guildId);
 const chan = guild.channels.cache.get(interaction3.channelId);
-await chan.delete();
+await chan.delete().catch(() => {});
 }
 })
 
