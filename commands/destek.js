@@ -52,7 +52,12 @@ const client = global.bot;
         .setLabel("Reddet")
         .setStyle("DANGER")
 
-
+        const dk = new MessageButton()
+        .setCustomId("kapat")
+        .setLabel("Destek Sonlandır")
+        .setStyle("SECONDARY")
+        .setEmoji("🎫")
+ 
         const row = new MessageActionRow()
         .addComponents([istek, sikayet, canlıdestek, basvuru])
 
@@ -61,6 +66,9 @@ const client = global.bot;
 
         const row3 = new MessageActionRow()
         .addComponents([onay, red])
+
+        const row31 = new MessageActionRow()
+        .addComponents([dk])
 
        interaction.reply({ content: `Lütfen **20 saniye** içerisinde hangi hizmeti kullanmak istediğinizi aşağıdaki butonlara tıklayarak belirtin.`, components: [row]})
 
@@ -143,16 +151,17 @@ ${interaction.user} - \`${interaction.user.id}\` kullanıcısı Canlı Desteğe 
 
  let msg = await LogChannel.send({ content: `<@&${ayar.CanlıDestekEkibiRoleID}>`, embeds: [ozi], components: [row3] });
 
-    client.on("interactionCreate", async (interaction2) => {
+  const collector2 = msg.createMessageComponentCollector({ componentType: 'BUTTON', max: 1 });
+
+  collector2.on("collect", async (interaction2) => {
 
     if (interaction2.customId == "onayla") {
   let ozi2 = new MessageEmbed()
   .setDescription(`
-${interaction.user} - \`${interaction.user.id}\` kullanıcısının Canlı Destek başvurusu ${interaction2.user} tarafından başarıyla onaylandı.
-  `)
+${interaction.user} - \`${interaction.user.id}\` kullanıcısının Canlı Destek başvurusu ${interaction2.user} tarafından başarıyla onaylandı.`)
   .setAuthor({ name: "Canlı Destek", iconURL: client.guilds.cache.get(ayar.GuildID).iconURL({ dynamic: true, size: 2048 }) })
   .setThumbnail(interaction2.user.displayAvatarURL({ dynamic: true, size: 2048 }))
-  .setTimestamp()
+  .setFooter({ text: "Kullanıcının destek talebini sonlandırmak için oluşturulan kanaldaki butonu kullanınız.", iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
 
 if(msg) msg.delete();
 
@@ -180,10 +189,15 @@ interaction2.reply({
         ],
         type: 'text',
       }).then(async c => {
-        interaction.user.send({
-          content: `Canlı Destek bağlantınız başarıyla ${interaction2.user} tarafından onaylandı.\n\nBuradan destek için yetkililerimiz ile konuşabilirsiniz. \` > \` <#${c.id}>`,
-          ephemeral: true
-        });
+
+ c.send({
+  content: `Canlı Destek Kanalı başarıyla oluşturuldu.\n**Not:** Destek işlemi bitince veya destek almaktan vazgeçerseniz buton yardımıyla kapatabilirsiniz.`,
+  components : [row31]
+})
+
+interaction.user.send({
+ content: `Canlı Destek bağlantınız başarıyla ${interaction2.user} tarafından onaylandı.\n\nBuradan destek için yetkililerimiz ile konuşabilirsiniz. \` > \` <#${c.id}>`
+});
  });
 }
 
@@ -206,6 +220,28 @@ interaction2.reply({
     await interaction.user.send({ content: `Canlı desteğe bağlanılırken bir hata oluştu veya bağlantı onaylanmadı!`, components: []}); 
 }
     })
+
+
+client.on("interactionCreate", async (interaction3) => {
+if (interaction3.customId == "kapat") {
+var LogChannel = client.guilds.cache.get(ayar.GuildID).channels.cache.find((channel) => channel.id === ayar.CanlıDestekLogChannelID);
+
+  let ozi31 = new MessageEmbed()
+  .setDescription(`
+${interaction.user} - \`${interaction.user.id}\` kullanıcısının Canlı Destek başvurusu ${interaction3.user} tarafından sonlandırıldı.
+  `)
+  .setAuthor({ name: "Canlı Destek", iconURL: client.guilds.cache.get(ayar.GuildID).iconURL({ dynamic: true, size: 2048 }) })
+  .setThumbnail(interaction3.user.displayAvatarURL({ dynamic: true, size: 2048 }))
+  .setTimestamp()
+
+await LogChannel.send({ embeds: [ozi31], components: [] });
+
+const guild = client.guilds.cache.get(interaction3.guildId);
+const chan = guild.channels.cache.get(interaction3.channelId);
+await chan.delete();
+}
+})
+
 
           collector.stop()
         } 
