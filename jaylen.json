@@ -18,12 +18,14 @@
     "star":"<a:star:920412163087142913>",
     "çizgi":"<a:cizgi:920415459281612821>",
 
+    "CanlıDestekEkibiRoleID":"canlı_destek_görevlisi_rol",
     "EnAltYetkiliRoleID":"Enaltyetkilirol_registerrol_fln_girersiniz",
     "TagRoleID":"tag_rol",
     "YetkiliAlımRoleID": "yetkili_alım_dm_Rol",
     "VerilecekYetkiliRolleriID": ["",""],
-    "EveryoneRoleID":"ayarlardan_rollerden_Everyone_rolün_id_alıcaksınız",
 
+    "CanlıDestekKategoryID":"log_kur_sonucu_oluşan_kategorinin_id",
+    "CanlıDestekLogChannelID":"canlı_destek_log_channel",
     "BaşvuruKategoryID":"log_kur_sonucu_oluşan_kategorinin_id",
     "BasvuruKomutKullanımKanalı":"en_üstteki_başvuru_kanal",
     "BaşvuruDurumLog": "başvuru_durumunu_üyelerin_göreceği_kanal",
