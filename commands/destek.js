@@ -224,17 +224,6 @@ interaction2.reply({
 
 client.on("interactionCreate", async (interaction3) => {
 if (interaction3.customId == "kapat") {
-var LogChannel = client.guilds.cache.get(ayar.GuildID).channels.cache.find((channel) => channel.id === ayar.CanlıDestekLogChannelID);
-
-  let ozi31 = new MessageEmbed()
-  .setDescription(`
-${interaction.user} - \`${interaction.user.id}\` kullanıcısının Canlı Destek başvurusu ${interaction3.user} tarafından sonlandırıldı.
-  `)
-  .setAuthor({ name: "Canlı Destek", iconURL: client.guilds.cache.get(ayar.GuildID).iconURL({ dynamic: true, size: 2048 }) })
-  .setThumbnail(interaction3.user.displayAvatarURL({ dynamic: true, size: 2048 }))
-  .setTimestamp()
-
-await LogChannel.send({ embeds: [ozi31], components: [] });
 
 const guild = client.guilds.cache.get(interaction3.guildId);
 const chan = guild.channels.cache.get(interaction3.channelId);
